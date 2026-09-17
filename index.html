@@ -1,1 +1,639 @@
-hello world 
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ParkirKu SMKN 1 Purwokerto</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f7fb;
+    color: #172033;
+}
+
+header {
+    background: #155eef;
+    color: white;
+    padding: 22px 18px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 25px;
+}
+
+header p {
+    margin: 6px 0 0;
+}
+
+.container {
+    max-width: 1050px;
+    margin: auto;
+    padding: 20px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.card {
+    background: white;
+    border-radius: 14px;
+    padding: 17px;
+    box-shadow: 0 3px 12px #00000010;
+}
+
+.card b {
+    font-size: 25px;
+    display: block;
+    margin-top: 7px;
+}
+
+.green {
+    color: #159447;
+}
+
+.red {
+    color: #d92d20;
+}
+
+.blue {
+    color: #155eef;
+}
+
+.orange {
+    color: #d97706;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 18px;
+}
+
+section {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 3px 12px #00000010;
+    margin-bottom: 18px;
+}
+
+h2 {
+    margin-top: 0;
+    font-size: 19px;
+}
+
+label {
+    font-size: 13px;
+    font-weight: bold;
+    display: block;
+    margin: 10px 0 6px;
+}
+
+input,
+select,
+button {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #d0d5dd;
+    border-radius: 9px;
+    font-size: 14px;
+}
+
+button {
+    border: 0;
+    background: #155eef;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 12px;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+.secondary {
+    background: #eef4ff;
+    color: #155eef;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.search {
+    margin-bottom: 12px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+th,
+td {
+    text-align: left;
+    padding: 11px 8px;
+    border-bottom: 1px solid #eaecf0;
+}
+
+th {
+    background: #f8fafc;
+}
+
+.badge {
+    padding: 5px 8px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    background: #ecfdf3;
+    color: #027a48;
+}
+
+.badge.out {
+    background: #fef3f2;
+    color: #b42318;
+}
+
+.parking {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+}
+
+.slot {
+    padding: 14px 4px;
+    border-radius: 9px;
+    text-align: center;
+    font-weight: bold;
+    background: #ecfdf3;
+    color: #027a48;
+    cursor: pointer;
+}
+
+.slot.occupied {
+    background: #fef3f2;
+    color: #b42318;
+}
+
+.slot small {
+    display: block;
+    font-weight: normal;
+    margin-top: 4px;
+}
+
+.notice {
+    padding: 12px;
+    border-radius: 10px;
+    background: #fffaeb;
+    color: #92400e;
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
+@media (max-width: 800px) {
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .parking {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="container">
+        <h1>🏍️ ParkirKu — Sistem Parkir Sekolah</h1>
+        <p>SMK NEGERI 1 PURWOKERTO</p>
+    </div>
+</header>
+
+<main class="container">
+
+<div class="cards">
+
+    <div class="card">
+        <span>Total Slot</span>
+        <b id="total" class="blue">20</b>
+    </div>
+
+    <div class="card">
+        <span>Terisi</span>
+        <b id="terisi" class="red">0</b>
+    </div>
+
+    <div class="card">
+        <span>Tersedia</span>
+        <b id="tersedia" class="green">20</b>
+    </div>
+
+    <div class="card">
+        <span>Persentase</span>
+        <b id="persen" class="orange">0%</b>
+    </div>
+
+</div>
+
+<div class="grid">
+
+<div>
+
+<section>
+
+<h2>➕ Catat Kendaraan Masuk</h2>
+
+<div class="notice">
+Pilih nomor slot yang tersedia, lalu simpan data kendaraan.
+</div>
+
+<label>Nama Siswa</label>
+<input id="nama" placeholder="Contoh: Nabila Azzahra">
+
+<label>Kelas</label>
+<input id="kelas" placeholder="Contoh: XI AKL 1">
+
+<label>No. Plat</label>
+<input id="plat" placeholder="Contoh: R 1234 AB">
+
+<label>Slot Parkir</label>
+<select id="slotSelect"></select>
+
+<button onclick="masuk()">
+Simpan Kendaraan Masuk
+</button>
+
+</section>
+
+<section>
+
+<h2>🅿️ Denah Slot Parkir</h2>
+
+<div class="parking" id="parking"></div>
+
+</section>
+
+</div>
+
+<section>
+
+<h2>📋 Data Parkir Hari Ini</h2>
+
+<input
+    class="search"
+    id="search"
+    oninput="render()"
+    placeholder="Cari nama, kelas, atau plat..."
+>
+
+<table>
+
+<thead>
+<tr>
+    <th>Nama</th>
+    <th>Kelas</th>
+    <th>Plat</th>
+    <th>Slot</th>
+    <th>Status</th>
+    <th>Aksi</th>
+</tr>
+</thead>
+
+<tbody id="data"></tbody>
+
+</table>
+
+</section>
+
+</div>
+
+</main>
+
+<script>
+
+const KEY = "parkirku-data";
+
+let data = JSON.parse(
+    localStorage.getItem(KEY) || "[]"
+);
+
+const slots = Array.from(
+    { length: 20 },
+    (_, i) => i + 1
+);
+
+function save() {
+
+    localStorage.setItem(
+        KEY,
+        JSON.stringify(data)
+    );
+
+    render();
+}
+
+function masuk() {
+
+    const nama =
+        document.getElementById("nama").value.trim();
+
+    const kelas =
+        document.getElementById("kelas").value.trim();
+
+    const plat =
+        document
+        .getElementById("plat")
+        .value
+        .trim()
+        .toUpperCase();
+
+    const slot =
+        +document.getElementById("slotSelect").value;
+
+    if (!nama || !kelas || !plat) {
+
+        alert(
+            "Lengkapi nama, kelas, dan nomor plat."
+        );
+
+        return;
+    }
+
+    if (
+        data.some(
+            x =>
+                x.slot === slot &&
+                x.status === "Masuk"
+        )
+    ) {
+
+        alert("Slot sudah terisi.");
+
+        return;
+    }
+
+    data.push({
+
+        id: Date.now(),
+
+        nama: nama,
+
+        kelas: kelas,
+
+        plat: plat,
+
+        slot: slot,
+
+        status: "Masuk",
+
+        waktu:
+            new Date().toLocaleTimeString(
+                "id-ID",
+                {
+                    hour: "2-digit",
+                    minute: "2-digit"
+                }
+            )
+
+    });
+
+    document.getElementById("nama").value = "";
+
+    document.getElementById("kelas").value = "";
+
+    document.getElementById("plat").value = "";
+
+    save();
+}
+
+function keluar(id) {
+
+    let x =
+        data.find(
+            a => a.id === id
+        );
+
+    if (x) {
+
+        x.status = "Keluar";
+
+        x.keluar =
+            new Date().toLocaleTimeString(
+                "id-ID",
+                {
+                    hour: "2-digit",
+                    minute: "2-digit"
+                }
+            );
+
+        save();
+    }
+}
+
+function render() {
+
+    const active =
+        data.filter(
+            x => x.status === "Masuk"
+        );
+
+    document.getElementById("total")
+        .textContent = 20;
+
+    document.getElementById("terisi")
+        .textContent = active.length;
+
+    document.getElementById("tersedia")
+        .textContent = 20 - active.length;
+
+    document.getElementById("persen")
+        .textContent =
+        Math.round(
+            active.length / 20 * 100
+        ) + "%";
+
+    const used =
+        new Set(
+            active.map(
+                x => x.slot
+            )
+        );
+
+    document.getElementById("slotSelect")
+        .innerHTML =
+        slots
+        .filter(
+            s => !used.has(s)
+        )
+        .map(
+            s =>
+                `<option value="${s}">
+                    Slot ${s}
+                </option>`
+        )
+        .join("")
+        ||
+        "<option>Parkir penuh</option>";
+
+    document.getElementById("parking")
+        .innerHTML =
+        slots
+        .map(s => {
+
+            let x =
+                active.find(
+                    a => a.slot === s
+                );
+
+            return `
+            <div
+                class="slot ${x ? "occupied" : ""}"
+                onclick="${
+                    x
+                    ?
+                    `alert('Slot ${s}: ${x.nama} — ${x.plat}')`
+                    :
+                    ""
+                }"
+            >
+                S${s}
+
+                <small>
+                    ${x ? x.plat : "Kosong"}
+                </small>
+
+            </div>
+            `;
+
+        })
+        .join("");
+
+    const q =
+        document
+        .getElementById("search")
+        .value
+        .toLowerCase();
+
+    document.getElementById("data")
+        .innerHTML =
+
+        data
+
+        .filter(x =>
+            (
+                x.nama +
+                x.kelas +
+                x.plat
+            )
+            .toLowerCase()
+            .includes(q)
+        )
+
+        .sort(
+            (a, b) =>
+                b.id - a.id
+        )
+
+        .map(x => `
+
+        <tr>
+
+            <td>${x.nama}</td>
+
+            <td>${x.kelas}</td>
+
+            <td>${x.plat}</td>
+
+            <td>S${x.slot}</td>
+
+            <td>
+
+                <span
+                    class="badge ${
+                        x.status === "Keluar"
+                        ? "out"
+                        : ""
+                    }"
+                >
+                    ${x.status}
+                </span>
+
+                <br>
+
+                <small>
+                    ${x.waktu}
+
+                    ${
+                        x.keluar
+                        ? " → " + x.keluar
+                        : ""
+                    }
+                </small>
+
+            </td>
+
+            <td>
+
+                ${
+                    x.status === "Masuk"
+
+                    ?
+
+                    `<button
+                        class="secondary"
+                        onclick="keluar(${x.id})"
+                    >
+                        Kendaraan Keluar
+                    </button>`
+
+                    :
+
+                    "-"
+                }
+
+            </td>
+
+        </tr>
+
+        `)
+
+        .join("")
+
+        ||
+
+        `
+        <tr>
+            <td colspan="6">
+                Belum ada data.
+            </td>
+        </tr>
+        `;
+}
+
+render();
+
+</script>
+
+</body>
+      </html>
